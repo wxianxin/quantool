@@ -1,12 +1,14 @@
-"""Calculate option greeks: 
-    1st order:
-        Delta
-        Vega
-        Theta
-        Rho
-        Epsilon
-    2nd order:
-        Gamma
+"""Calculate option greeks:
+
+1st order:
+    - Delta
+    - Vega
+    - Theta
+    - Rho
+    - Epsilon
+
+2nd order:
+    - Gamma
 
 """
 
@@ -18,7 +20,11 @@ from scipy.stats import norm
 
 
 class Option(object):
-    """"""
+    """
+    NOTE: All numeric values are with unit 1; No percent or any convention is used.
+    NOTE: For now the code is structured for readability not for performance. 
+            A performance-oriented c++ implementation maybe created later.
+    """
 
     def __init__(
         self,
@@ -43,7 +49,7 @@ class Option(object):
         self.greek_dict = {}
 
     def get_price(self):
-        """TODO test"""
+        """Get option price"""
         d1 = (
             math.log(self.s / self.k) + (self.r + 0.5 * self.sigma ** 2) * self.tau
         ) / (self.sigma * self.tau)
@@ -64,7 +70,7 @@ class Option(object):
         return self.v
 
     def get_greeks(self):
-        """"""
+        """Calculate the greeks"""
         d1 = (
             math.log(self.s / self.k) + (self.r + 0.5 * self.sigma ** 2) * self.tau
         ) / (self.sigma * self.tau)
@@ -118,3 +124,7 @@ class Option(object):
             )
 
         return self.greek_dict
+
+
+if __name__ == "__main__":
+    pass
