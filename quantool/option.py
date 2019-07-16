@@ -1,14 +1,19 @@
-"""Calculate option greeks:
+"""Option Class
 
-1st order:
-    - Delta
-    - Vega
-    - Theta
-    - Rho
-    - Epsilon
+Calculate Black Scholes Price
 
-2nd order:
-    - Gamma
+Get Black Scholes Implied Volatitlity
+
+Greeks:
+    1st order:
+        - Delta
+        - Vega
+        - Theta
+        - Rho
+        - Epsilon
+
+    2nd order:
+        - Gamma
 
 """
 
@@ -25,6 +30,13 @@ class Option(object):
     NOTE: For now the code is structured for readability not for performance. 
             A performance-oriented c++ implementation maybe created later.
     """
+
+    _notation_dict = {
+        "C": "European Call Option",
+        "P": "European Put Option",
+        "c": "American Call Option",
+        "p": "American Put Option",
+    }
 
     def __init__(
         self,
@@ -47,6 +59,21 @@ class Option(object):
         self.d = d
         self.v = v
         self.greek_dict = {}
+
+    def __repr__(self):
+        """representation"""
+        return f"{self.option_type}, S: {self.s}, K: {self.k}, r: {self.r}, Tau: {self.tau}, Sigma: {self.sigma}, d: {self.d}, V: {self.v}"
+
+    def __str__(self):
+        """string representation"""
+        return f"""{self._notation_dict[self.option_type]}
+    Underlying Price: {self.s}
+    Strike Price: {self.k}
+    Interest Rate: {self.r}
+    Time to Maturity: {self.tau}
+    Underlying Standard Deviation: {self.sigma}
+    Dividend Rate: {self.d}
+    Option Value: {self.v}"""
 
     def get_price(self):
         """Get option price"""
