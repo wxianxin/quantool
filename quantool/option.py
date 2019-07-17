@@ -45,9 +45,9 @@ class Option(object):
         k: float,
         r: float,
         tau: float,
-        sigma: float = np.nan,
+        sigma: float = None,
         d: float = 0,
-        v: float = np.nan,
+        v: float = None,
     ):
         """"""
         self.option_type = option_type
@@ -156,6 +156,20 @@ class Option(object):
             )
 
         return self.greek_dict
+
+    def get_iv(self, price):
+        """Get BS Implied Volatility"""
+        def objective_func(sigma, price):
+            """Objective function used for optimization in getting Implied Volatility.
+            """
+            self.sigma = sigma
+            print(self.sigma)
+            return (price - self.get_price()) ** 2
+
+        # brent is the better method for unimodal function
+        res = optimize.minimize_scalar(objective_func, bracket=(0.001, 1), args=(price), method='brent')
+
+        return res
 
 
 if __name__ == "__main__":
