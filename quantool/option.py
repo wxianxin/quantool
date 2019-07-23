@@ -20,15 +20,15 @@ Greeks:
 __author__ = "Steven Wang"
 
 import math
-import numpy as np
+from scipy import optimize
 from scipy.stats import norm
 
 
 class Option(object):
     """
     NOTE: All numeric values are with unit 1; No percent or any convention is used.
-    NOTE: For now the code is structured for readability not for performance. 
-            A performance-oriented c++ implementation maybe created later.
+    NOTE: For now the code is structured for readability not for performance.
+            A performance-oriented c++ implementation may be created later.
     """
 
     _notation_dict = {
@@ -105,6 +105,7 @@ class Option(object):
         ) / (self.sigma * self.tau ** 0.5)
         d2 = d1 - self.sigma * self.tau ** 0.5
         if self.option_type == "C":
+            # European Call Option
             self.greek_dict["delta"] = math.exp(-self.d * self.tau) * norm.cdf(d1)
             self.greek_dict["gamma"] = (
                 self.k
@@ -132,6 +133,7 @@ class Option(object):
             )
 
         elif self.option_type == "P":
+            # European Put Option
             self.greek_dict["delta"] = -math.exp(-self.d * self.tau) * norm.cdf(-d1)
             self.greek_dict["gamma"] = (
                 self.k
@@ -159,15 +161,17 @@ class Option(object):
 
     def get_iv(self, price):
         """Get BS Implied Volatility"""
+
         def objective_func(sigma, price):
             """Objective function used for optimization in getting Implied Volatility.
             """
             self.sigma = sigma
-            print(self.sigma)
             return (price - self.get_price()) ** 2
 
         # brent is the better method for unimodal function
-        res = optimize.minimize_scalar(objective_func, bracket=(0.001, 1), args=(price), method='brent')
+        res = optimize.minimize_scalar(
+            objective_func, bracket=(0.001, 1), args=(price), method="brent"
+        )
 
         return res
 

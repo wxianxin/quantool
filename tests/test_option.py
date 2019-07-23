@@ -45,6 +45,12 @@ def test_get_greeks():
     print(option.get_greeks())
 
 
+def test_get_iv():
+    option = quantool.Option(**option_data)
+    print(option.get_iv(16.0724937228103))
+
+
 if __name__ == "__main__":
     test_get_price()
     test_get_greeks()
+    test_get_iv()
