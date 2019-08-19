@@ -26,8 +26,8 @@ from scipy.stats import norm
 
 class Option(object):
     """
-    NOTE: All numeric values are with unit 1; No percent or any convention is used.
-    NOTE: For now the code is structured for readability not for performance.
+    NOTE: All numeric values are with unit 1; No percent nor any convention is used.
+    NOTE: For now the code is structured for readability rather than performance.
             A performance-oriented c++ implementation may be created later.
     """
 

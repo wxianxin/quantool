@@ -2,7 +2,7 @@
 
 __author__ = "Steven Wang"
 
-import quantool
+import pytest
 
 option_data = {
     "option_type": "C",
@@ -35,22 +35,23 @@ benchmark = {
 }
 
 
-def test_get_price():
-    option = quantool.Option(**option_data)
+def test_get_price(generate_option):
+    option = generate_option
     print(option.get_price())
+    assert option.get_price() == benchmark["C_price"]
 
 
-def test_get_greeks():
-    option = quantool.Option(**option_data)
+def test_get_greeks(generate_option):
+    option = generate_option
     print(option.get_greeks())
 
 
-def test_get_iv():
-    option = quantool.Option(**option_data)
+def test_get_iv(generate_option):
+    option = generate_option
     print(option.get_iv(16.0724937228103))
 
 
 if __name__ == "__main__":
-    test_get_price()
-    test_get_greeks()
-    test_get_iv()
+    pytest.main()
+# pytest -v -s -r p,f,E -p no:warnings .
+
