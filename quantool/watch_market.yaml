@@ -1,0 +1,33 @@
+########################################################################################
+# color mapping supports 4bit ANSII color
+color_mapping:
+    1: green    # color when price move higher
+    0: default  # color when price stay
+    -1: red     # color when price move lower
+########################################################################################
+yahoo_finance_api_entry: "https://query1.finance.yahoo.com/v7/finance/quote?lang=en-US&region=US&corsDomain=finance.yahoo.com&fields=replace_field&symbols=replace_symbol"
+
+field_list:
+    - symbol
+    - marketState
+    - regularMarketPrice
+    - regularMarketChange
+    - regularMarketChangePercent
+    - preMarketPrice
+    - preMarketChange
+    - preMarketChangePercent
+    - postMarketPrice
+    - postMarketChange
+    - postMarketChangePercent
+
+symbol_list:    # uppercase
+    - AAPL
+    - MSFT
+    - TSLA
+    - AMZN
+    - 0981.HK
+    - 000001.SS
+
+########################################################################################
+# option
+option_chain: https://query2.finance.yahoo.com/v7/finance/options/replace_symbol

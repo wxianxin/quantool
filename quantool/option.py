@@ -62,7 +62,10 @@ class Option(object):
 
     def __repr__(self):
         """representation"""
-        return f"{self.option_type}, S: {self.s}, K: {self.k}, r: {self.r}, Tau: {self.tau}, Sigma: {self.sigma}, d: {self.d}, V: {self.v}"
+        return (
+            f"{self.option_type}, S: {self.s}, K: {self.k}, r: {self.r}, Tau:"
+            f" {self.tau}, Sigma: {self.sigma}, d: {self.d}, V: {self.v}"
+        )
 
     def __str__(self):
         """string representation"""
@@ -163,8 +166,7 @@ class Option(object):
         """Get BS Implied Volatility"""
 
         def objective_func(sigma, price):
-            """Objective function used for optimization in getting Implied Volatility.
-            """
+            """Objective function used for optimization in getting Implied Volatility."""
             self.sigma = sigma
             return (price - self.get_price()) ** 2
 
