@@ -20,13 +20,31 @@ field_list:
     - postMarketChange
     - postMarketChangePercent
 
-symbol_list:    # uppercase
-    - AAPL
-    - MSFT
-    - TSLA
-    - AMZN
-    - 0981.HK
-    - 000001.SS
+symbol_dict:    # uppercase
+    row_1:
+        - ^TNX
+        - ^SPX
+        - ^VIX
+        - GC=F
+        - CL=F
+        - DX-Y.NYB
+        - CNY=X
+        - BTCUSD=X
+    row_2:
+        - COF
+        - UVXY
+        - PLUG
+        - BLDP
+        - FCEL
+        - NVDA
+        - MSFT
+        - TSLA
+        - AMZN
+    row_3:
+        - 2236.HK
+        - 0981.HK
+        - 002594.SZ
+        - 600703.SS
 
 ########################################################################################
 # option
