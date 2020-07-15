@@ -1,5 +1,9 @@
 # Steven Wang 2020
 
+line_start: "\e["
+line_end: "A"
+line_clear: "\e[K"
+
 # reset
 reset: "\e[0m"
 # font
