@@ -47,5 +47,3 @@ symbol_dict:    # uppercase
         - 600703.SS
 
 ########################################################################################
-# option
-option_chain: https://query2.finance.yahoo.com/v7/finance/options/replace_symbol

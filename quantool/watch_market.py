@@ -1,10 +1,15 @@
-# Steven Wang 2020
+"""
+"""
+
+__author__ = "Steven Wang"
 
 import datetime
 import requests
 import pkgutil
 import time
 import yaml
+
+from . import query_yahoo
 
 
 def print_row(
@@ -102,24 +107,15 @@ def watch_market(interval: int = 2):
     snapshot_dict = {1: {x: 0 for x in symbol_list}}
     up_down_mask = {x: 0 for x in symbol_list}
 
+    # for network efficiency
     session = requests.Session()
     while True:
+        snapshot_time, equity_snapshot_dict = query_yahoo.get_equity(
+            field_string, symbol_string, session
+        )
+        snapshot_dict[0] = snapshot_dict[1]
+        snapshot_dict[1] = equity_snapshot_dict
         try:
-            resp = session.get(
-                url=conf_dict["yahoo_finance_api_entry"]
-                .replace("replace_field", field_string)
-                .replace("replace_symbol", symbol_string)
-            )
-            snapshot_time = str(
-                datetime.datetime.fromtimestamp(
-                    resp.json()["quoteResponse"]["result"][0]["regularMarketTime"]
-                ).strftime("%Y%m%d %H:%M:%S")
-            )
-            snapshot_dict[0] = snapshot_dict[1]
-            snapshot_dict[1] = {
-                x["symbol"]: x["regularMarketPrice"]
-                for x in resp.json()["quoteResponse"]["result"]
-            }
             for _ in symbol_list:
                 diff = snapshot_dict[1][_] - snapshot_dict[0][_]
                 if diff > 0:
