@@ -3,7 +3,6 @@
 
 __author__ = "Steven Wang"
 
-import datetime
 import requests
 import pkgutil
 import time

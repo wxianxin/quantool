@@ -9,7 +9,7 @@ from . import query_yahoo
 from .option import Option
 
 
-def show_option(symbol_string: str, r: float = None):
+def prepare_option(symbol_string: str, r: float = None):
     """"""
     option_snapshot_dict = query_yahoo.get_option(symbol_string)
     option_chain_dict = option_snapshot_dict["optionChain"]["result"][0]["options"][0]
@@ -32,10 +32,26 @@ def show_option(symbol_string: str, r: float = None):
                 )
             )
 
-
-
-    breakpoint()
     return option_dict
+
+
+def show_option(symbol_string: str):
+    """"""
+    snapshot_time, r_snapshot_dict = query_yahoo.get_equity(
+        "regularMarketTime,regularMarketPrice", "^TNX"
+    )
+    r = r_snapshot_dict["^TNX"]
+    option_dict = prepare_option(symbol_string, r)
+    for _ in option_dict.keys():
+        print(f"{_} options:")
+        for x in option_dict[_]:
+            calculated_price = x.get_price()
+            calculated_iv = x.get_iv(calculated_price)["x"] ** 2
+            print(
+                "    K: {} | P: {:9.4f} | IV: {:9.4f}".format(
+                    x.k, calculated_price, calculated_iv
+                )
+            )
 
 
 if __name__ == "__main__":
