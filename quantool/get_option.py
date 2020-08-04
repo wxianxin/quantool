@@ -24,9 +24,9 @@ def prepare_option(symbol_string: str, r: float = None):
             option_dict[_].append(
                 Option(
                     option_type=_[0].upper(),
-                    s=underlying_price,
+                    S=underlying_price,
                     r=r,
-                    k=x["strike"],
+                    K=x["strike"],
                     tau=(x["expiration"] - x["lastTradeDate"]) / 86400 / 360,
                     sigma=x["impliedVolatility"] ** 0.5,
                 )
@@ -35,7 +35,7 @@ def prepare_option(symbol_string: str, r: float = None):
     return option_dict
 
 
-def show_option(symbol_string: str):
+def print_option(symbol_string: str):
     """"""
     snapshot_time, r_snapshot_dict = query_yahoo.get_equity(
         "regularMarketTime,regularMarketPrice", "^TNX"
@@ -49,7 +49,7 @@ def show_option(symbol_string: str):
             calculated_iv = x.get_iv(calculated_price)["x"] ** 2
             print(
                 "    K: {} | P: {:9.4f} | IV: {:9.4f}".format(
-                    x.k, calculated_price, calculated_iv
+                    x.K, calculated_price, calculated_iv
                 )
             )
 
