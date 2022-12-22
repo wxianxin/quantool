@@ -10,12 +10,10 @@ with open("README.md") as f:
 with open("LICENSE") as f:
     license = f.read()
 
-# exec(open("quantool/version.py").read())
-with open("quantool/version.py") as f:
-    __version__ = f.read()
 setup(
     name="quantool",
-    version=__version__,
+    setup_requires=["setuptools_scm"],
+    use_scm_version=True,
     author="Steven Wang",
     description="Quant Tools for Financial Calculations",
     long_description=long_description,
