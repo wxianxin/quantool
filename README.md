@@ -1,6 +1,4 @@
 # quantool
-Financial mathematics toolbox
-
 
 Documentation
 =============
