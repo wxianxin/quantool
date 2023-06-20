@@ -1,0 +1,53 @@
+# Example configuration for Black.
+
+# NOTE: you have to use single-quoted strings in TOML for regular expressions.
+# It's the equivalent of r-strings in Python. 
+
+[build-system]
+requires = ["setuptools", "setuptools_scm"]
+
+[project]
+name = "quantool"
+description = "Quant Tools"
+authors = [{name = "Steven Wang", email = "not@available.yet"}]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.21.0",
+    "scipy>=1.10.0",
+]
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://wxianxin.github.io/quantool/"
+Homepage = "https://github.com/wxianxin/quantool"
+
+[tool.setuptools_scm]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+include = []
+exclude = ["docs*", "tests*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py37', 'py38']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+preview = false
+
