@@ -1,15 +1,18 @@
 import numpy as np
 import abc
-from typing import List, Union, Iterator
+from typing import Union, Iterator
 
 import event
 
 
 class DataFeed(abc.ABC):
-    """Abstract class"""
+    """Abstract class
+    * Provides the latest market data.
+    * Can handle multiple data sources: CSV, databases, live data feeds, etc.
+    """
 
     @abc.abstractmethod
-    def get_data(self) -> Iterator[Union[None, "MarketEvent"]]:
+    def get_data(self) -> Iterator[Union[None, event.MarketEvent]]:
         pass
 
 
@@ -52,4 +55,3 @@ if __name__ == "__main__":
     feed = CSVDataFeed("/home/coupe/Downloads/AMD.csv")
     for x in feed.get_data():
         print(x)
-

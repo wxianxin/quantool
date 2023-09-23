@@ -29,14 +29,17 @@ class SignalEvent(Event):
     Signals from a strategy with a timestamp, symbol, and direction.
     """
 
-    def __init__(self, timestamp: np.datetime64, symbol: str, direction: str):
+    def __init__(
+        self, timestamp: np.datetime64, symbol: str, direction: str, signal_price: float
+    ):
         self.timestamp = timestamp
         self.symbol = symbol
         assert direction in ["BUY", "SELL"], "Invalid direction"
         self.direction = direction
+        self.signal_price = signal_price
 
     def __str__(self) -> str:
-        return f"SignalEvent({self.timestamp}, {self.symbol}, {self.direction})"
+        return f"SignalEvent({self.timestamp}, {self.symbol}, {self.direction}, {self.signal_price})"
 
 
 class OrderEvent(Event):
@@ -46,16 +49,17 @@ class OrderEvent(Event):
     """
 
     def __init__(
-        self, timestamp: np.datetime64, symbol: str, quantity: int, direction: str
+            self, timestamp: np.datetime64, symbol: str, quantity: int, direction: str, order_price: float
     ):
         self.timestamp = timestamp
         self.symbol = symbol
         self.quantity = quantity
         assert direction in ["BUY", "SELL"], "Invalid direction"
         self.direction = direction
+        self.order_price = order_price
 
     def __str__(self) -> str:
-        return f"OrderEvent({self.timestamp}, {self.symbol}, {self.quantity}, {self.direction})"
+        return f"OrderEvent({self.timestamp}, {self.symbol}, {self.quantity}, {self.direction}, {self.order_price})"
 
 
 class FillEvent(Event):

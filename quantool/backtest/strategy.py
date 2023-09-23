@@ -50,7 +50,7 @@ class MovingAverageCrossoverStrategy(Strategy):
             f"Initialized MovingAverageCrossoverStrategy with short_window={short_window} and long_window={long_window}"
         )
 
-    def update_averages(self, new_value):
+    def _update_averages(self, new_value):
         """
         Compute short and long moving averages.
         """
@@ -95,16 +95,15 @@ class MovingAverageCrossoverStrategy(Strategy):
         if len(self.data) < self.long_window:
             return None
 
-        self.update_averages(x.price)
+        self._update_averages(x.price)
 
         if self.current_short_sma > self.current_long_sma and self.prev_short_sma <= self.prev_long_sma:
-            print("BUY")
             logger.info(f"Generated BUY signal on {x.timestamp}")
-            return event.SignalEvent(x.timestamp, x.symbol, "BUY")
+            return event.SignalEvent(x.timestamp, x.symbol, "BUY", x.price)
         elif self.current_short_sma < self.current_long_sma and self.prev_short_sma >= self.prev_long_sma:
             print("SELL")
             logger.info(f"Generated SELL signal on {x.timestamp}")
-            return event.SignalEvent(x.timestamp, x.symbol, "SELL")
+            return event.SignalEvent(x.timestamp, x.symbol, "SELL", x.price)
 
         return None
 
