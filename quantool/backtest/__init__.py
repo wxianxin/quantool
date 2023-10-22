@@ -1,7 +1,7 @@
 """Quant Tool
 Back test module
 TODO:
-    - MarketEvent put location
+    - Visualization
 """
 
 __author__ = "Steven Wang"
