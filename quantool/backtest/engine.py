@@ -95,9 +95,9 @@ if __name__ == "__main__":
         portfolio_class=portfolio.Portfolio,
         execution_handler_class=execution.SimulatedExecutionHandler,
         args={
-            "datafeed": {"csv_file": "/home/coupe/Downloads/AMD.csv"},
+            "datafeed": {"csv_file": "/config/workspace/data/AMD.csv"},
             "strategy": {},
-            "portfolio": {"initial_cash": 100000.0},
+            "portfolio": {"initial_cash": 1_000_000.0},
         },
     )
 
