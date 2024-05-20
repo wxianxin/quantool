@@ -74,12 +74,20 @@ def get_hist():
     # historical data
     # only single conid allowed at a time
     endpoint = "hmds/history"
-    conid = "conid=265598"
+    conid = "conid=4391"
     period = "period=1w"
     bar = "bar=1d"
     outsideRth = "outsideRth=true"  # optional
     barType = "barType=midpoint"  # optional
-    params = "&".join([conid, period, bar, outsideRth, barType])
+    params = "&".join(
+        [
+            conid,
+            period,
+            bar,
+            outsideRth,
+            barType,
+        ]
+    )
     request_url = "".join([base_url, endpoint, "?", params])
     hd_req = requests.get(url=request_url, verify=False)
     hd_json = json.dumps(hd_req.json(), indent=2)
@@ -91,40 +99,41 @@ def get_hist():
 
 def get_contract():
     # contract search (e.g. AAPL is 265598)
+    base_url = "https://192.168.8.9:5001/v1/api/"
     endpoint = "iserver/secdef/search"
-    json_body = {"symbol": "ES", "secType": "STK", "name": False}
+    json_body = {"symbol": "amd", "secType": "STK", "name": False}
     contract_req = requests.post(url=base_url + endpoint, verify=False, json=json_body)
-    print(contract_json.json())
+    print(contract_req.json())
 
-    # contract info
-    endpoint = "iserver/secdef/info"
-    conid = "conid=11004968"
-    secType = "secType=FOP"
-    month = "month=JUL23"
-    exchange = "exchange=CME"
-    strike = "strike=4800"  # remove these 2 for more data
-    right = "right=C"  # remove these 2 for more data
-    params = "&".join([conid, secType, month, exchange, strike, right])
-    request_url = "".join([base_url, endpoint, "?", params])
-    contract_req = requests.get(url=request_url, verify=False)
-    contract_json = json.dumps(contract_req.json(), indent=2)
-    print(contract_req)
-    print(contract_json)
+    # # contract info
+    # endpoint = "iserver/secdef/info"
+    # conid = "conid=11004968"
+    # secType = "secType=FOP"
+    # month = "month=JUL23"
+    # exchange = "exchange=CME"
+    # strike = "strike=4800"  # remove these 2 for more data
+    # right = "right=C"  # remove these 2 for more data
+    # params = "&".join([conid, secType, month, exchange, strike, right])
+    # request_url = "".join([base_url, endpoint, "?", params])
+    # contract_req = requests.get(url=request_url, verify=False)
+    # contract_json = json.dumps(contract_req.json(), indent=2)
+    # print(contract_req)
+    # print(contract_json)
 
-    # contract strike
-    endpoint = "iserver/secdef/strikes"
-    conid = "conid=11004968"
-    secType = "secType=FOP"
-    month = "month=JUL23"
-    exchange = "exchange=CME"
-    params = "&".join([conid, secType, month, exchange])
-    request_url = "".join([base_url, endpoint, "?", params])
-    strikes_req = requests.get(url=request_url, verify=False)
-    strikes_json = json.dumps(strikes_req.json(), indent=2)
-    print(strikes_req)
-    print(strikes_json)
+    # # contract strike
+    # endpoint = "iserver/secdef/strikes"
+    # conid = "conid=11004968"
+    # secType = "secType=FOP"
+    # month = "month=JUL23"
+    # exchange = "exchange=CME"
+    # params = "&".join([conid, secType, month, exchange])
+    # request_url = "".join([base_url, endpoint, "?", params])
+    # strikes_req = requests.get(url=request_url, verify=False)
+    # strikes_json = json.dumps(strikes_req.json(), indent=2)
+    # print(strikes_req)
+    # print(strikes_json)
 
-    return None
+    return contract_req
 
 
 def place_order(acct_id: str):
@@ -234,4 +243,9 @@ def cancel_order(acct_id: str):
 
 
 if __name__ == "__main__":
-    data = acctPos(acct_id)
+    # data = acctPos("DU2534309")
+    # data = get_market()
+    data = get_hist()
+    # data = historicalData()
+    # data = get_contract()
+    print(data)
