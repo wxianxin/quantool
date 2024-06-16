@@ -1,10 +1,15 @@
-from pymongo import MongoClient
+import datetime
+import pandas as pd
+import pymongo
 
 # Connection URL
 # Replace 'localhost' with the IP or hostname of your MongoDB server if it's remote
 # Include the port if it's not the default port 27017
 # Example for remote MongoDB: "mongodb://username:password@host:port/"
-client = MongoClient("mongodb://username:password@192.168.8.8:27017/")
+username = ""
+password = ""
+mongodb_uri = f"mongodb://{username}:{password}@192.168.8.8:27017/"
+client = pymongo.MongoClient(mongodb_uri)
 
 # Database Name
 db = client["mydatabase"]
@@ -33,3 +38,36 @@ for doc in documents:
 
 # Optional: Close the connection
 client.close()
+
+
+############################################################################################################
+# time series data
+
+db.create_collection(
+    name="ts_collection",
+    timeseries={
+        "timeField": "timestamp",
+        "metaField": "trading_pair",  # optional
+        "granularity": "seconds",
+    },
+)
+
+collection = db["ts_collection"]
+
+data = {
+    "timestamp": [
+        datetime.datetime(2024, 1, 1, 12, 0, 0, 1000),  # 1ms
+        datetime.datetime(2024, 1, 1, 12, 0, 0, 2000),  # 2ms
+        datetime.datetime(2024, 1, 1, 12, 0, 0, 3000),  # 3ms
+    ],
+    "value": [10, 20, 30],
+    "timestamp_ms": [
+        int(datetime.datetime.now().timestamp() * 1e6),
+        int(datetime.datetime.now().timestamp() * 1e6),
+        int(datetime.datetime.now().timestamp() * 1e6),
+    ],
+    "metadata": ["sensor1", "sensor2", "sensor3"],
+}
+df = pd.DataFrame(data)
+records = df.to_dict("records")
+collection.insert_many(records)
