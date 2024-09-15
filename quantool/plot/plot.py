@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def plot_grid(vec_of_dict):
@@ -26,16 +27,117 @@ def plot_grid(vec_of_dict):
     plt.show()
 
 
-def plot_dict_of_vec(data):
+def plot_dict_of_vec(data, title="Loss over Epochs", xlabel="Epoch", ylabel="Loss"):
     # Plot each loss series
     for label, loss_values in data.items():
         plt.plot(loss_values, label=label)
 
     # Add labels and title
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.title("Loss over Epochs")
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
     plt.legend()
 
     # Display the plot
+    plt.show()
+
+
+def plot_performance(
+    x,
+    y,
+    drawdown,
+    position,
+    benchmark=None,
+    title="Performance Metrics",
+    xlabel="time",
+    ylabel="pnl",
+):
+    color = "palegreen"
+    # downsample the data for better visualization
+    if len(x) / 10_000 > 10:
+        step = len(x) // 10_000
+        x = x[::step]
+        y = y[::step]
+        drawdown = drawdown[::step]
+        position = position[::step]
+        if benchmark is not None:
+            benchmark = benchmark[::step]
+
+    # Create the figure and the grid layout
+    fig = plt.figure(figsize=(16, 9))
+    gs = fig.add_gridspec(2, 2, wspace=0.1, width_ratios=(4, 1), height_ratios=(4, 1))
+
+    # Main plot (top left)
+    ax = fig.add_subplot(gs[0, 0])
+    ax.plot(x, y, "b")
+    if benchmark is not None:
+        ax.plot(x, benchmark, "r", label="Benchmark")
+        ax.legend()
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
+
+    # Drawdown plot
+    ax_drawdown = ax.twinx()  # Create twin axis sharing the same x-axis
+    ax_drawdown.fill_between(
+        x,
+        0,
+        drawdown,
+        where=(drawdown <= 0),
+        color=color,
+        alpha=0.5,
+        label="Drawdown",
+    )
+
+    # Set the same y-limits for both ax and ax_drawdown
+    y_min, y_max = ax.get_ylim()  # Get limits from the main plot
+    ax_drawdown.set_ylim(-y_max, 0)  # Set the drawdown y-axis limits to mirror main
+
+    # Bottom plot (bottom left)
+    ax_1_0 = fig.add_subplot(gs[1, 0], sharex=ax)
+    ax_1_0.plot(x, position, color)
+    ax_1_0.set_ylabel("position")
+
+    # Right Top part (top right)
+    ax_0_1 = fig.add_subplot(gs[0, 1], sharey=ax)
+    ax_0_1.set_facecolor(color)
+    # hide axis
+    ax_0_1.tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
+    # hide plot border
+    for spine in ax_0_1.spines.values():
+        spine.set_visible(False)
+
+    cell_text = [
+        ["NAV:", "101.23"],
+        ["Max DD:", "-10.50%"],
+        ["Sharpe:", "1.45"],
+    ]
+    table = ax_0_1.table(
+        cellText=cell_text,
+        cellColours=[["red", "red"], ["green", "green"], ["blue", "blue"]],
+        cellLoc="left",
+        colWidths=[0.6, 0.4],
+        loc="center",
+        edges="open",
+    )
+    table.auto_set_font_size(False)
+    table.set_fontsize(12)
+    table.scale(1, 3)  # Scale to fit the layout
+
+    # Right Bottom part (bottom right)
+    ax_1_1 = fig.add_subplot(gs[1, 1])
+    ax_1_1.axis("off")
+    text = "AK-RS-test"
+    ax_1_1.text(
+        0.5,
+        0.5,
+        text,
+        ha="center",
+        va="center",
+        fontsize=20,
+        fontweight="bold",
+        color="white",
+        bbox=dict(facecolor=color, edgecolor="none", boxstyle="round,pad=1"),
+    )
+
     plt.show()

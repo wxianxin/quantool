@@ -7,6 +7,7 @@ from .get_option import prepare_option
 from .get_option import print_option
 from .option import Option
 from .watch_market import watch_market
+from . import datasets
 from . import query_yahoo
 from . import sabr
 from .io import RDB

@@ -18,6 +18,7 @@ dependencies = [
     "pandas",
     "sqlalchemy",
     "pymysql",
+    "requests",
 ]
 dynamic = ["version"]
 
